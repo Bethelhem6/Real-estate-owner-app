@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:upload_property/authenthication/auth_screen.dart';
 import 'package:upload_property/my_properties/mian_page.dart';
 import 'package:upload_property/splash_page.dart';
 
@@ -19,7 +20,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Companies app',
-      theme: ThemeData(primaryColor: Colors.teal,),
+      theme: ThemeData(
+        primaryColor: Colors.teal,
+      ),
       home: const MainPage(),
     );
   }

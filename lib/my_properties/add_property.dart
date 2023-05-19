@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
 
 import 'dart:io';
 
@@ -30,7 +30,7 @@ class House {
   final String validationStatus;
 
   final int price;
-  final List<String> imageUrls;
+  final List<dynamic> imageUrls;
 
   House({
     required this.validationStatus,
@@ -80,20 +80,65 @@ class House {
 }
 
 class AddHouseScreen extends StatefulWidget {
+  // final String? id;
+  // final String? whatFor;
+  // final String? address;
+  // final String? companyName;
+  // final String? category;
+  // final String? status;
+  // final int? bedRooms;
+  // final int? bathRoom;
+  // final String? ownerId;
+
+  // final int? area;
+  // final String? dateAdded;
+  // final int? likes;
+  // final String? description;
+  // final String? ownerName;
+  // final String? ownerImage;
+  // final String? ownerEmail;
+  // final String? validationStatus;
+
+  // final int? price;
+  // final List<dynamic>? imageUrls;
+
+  const AddHouseScreen(
+      {super.key,
+      // this.id,
+      // this.whatFor,
+      // this.address,
+      // this.companyName,
+      // this.category,
+      // this.status,
+      // this.bedRooms,
+      // this.bathRoom,
+      // this.ownerId,
+      // this.area,
+      // this.dateAdded,
+      // this.likes,
+      // this.description,
+      // this.ownerName,
+      // this.ownerImage,
+      // this.ownerEmail,
+      // this.validationStatus,
+      // this.price,
+      // this.imageUrls
+      });
+
   @override
   _AddHouseScreenState createState() => _AddHouseScreenState();
 }
 
 class _AddHouseScreenState extends State<AddHouseScreen> {
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
+  var _addressController = "";
+  var _priceController = 0;
 
-  final TextEditingController _companyNameController = TextEditingController();
-  final TextEditingController _areaController = TextEditingController();
-  final TextEditingController _statusController = TextEditingController();
-  final TextEditingController _bedRoomController = TextEditingController();
-  final TextEditingController _bathRoomController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  var _companyNameController = "";
+  var _areaController = 0;
+  var _statusController = "";
+  var _bedRoomController = 0;
+  var _bathRoomController = 0;
+  var _descriptionController = "";
 
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
@@ -122,7 +167,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
     });
   }
 
-  String category = 'Villa';
+  String category = "Villa";
   List<DropdownMenuItem<String>> get categories {
     List<DropdownMenuItem<String>> menuItems = [
       const DropdownMenuItem(value: "Villa", child: Text("Villa")),
@@ -193,16 +238,16 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
       });
       var uuid = const Uuid();
       String houseId = uuid.v4();
-      final String address = _addressController.text;
-      final int price = int.parse(_priceController.text);
-      final String companyName = _companyNameController.text;
-      final int area = int.parse(_areaController.text);
-      // final String status = _statusController.text;
+      final String address = _addressController;
+      final int price = _priceController;
+      final String companyName = _companyNameController;
+      final int area = _areaController;
+      // final String status = _statusController;
 
-      final int bedRooms = int.parse(_bedRoomController.text);
+      final int bedRooms = _bedRoomController;
 
-      final int bathRoom = int.parse(_bathRoomController.text);
-      final String description = _descriptionController.text;
+      final int bathRoom = _bathRoomController;
+      final String description = _descriptionController;
 
       const int likes = 0;
       var date = DateTime.now().toString();
@@ -238,14 +283,14 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('House uploaded successfully')),
         );
-        _addressController.clear();
-        _priceController.clear();
-        _bathRoomController.clear();
-        _bedRoomController.clear();
-        _areaController.clear();
-        _companyNameController.clear();
-        _statusController.clear();
-        _descriptionController.clear();
+        _addressController = '';
+        _priceController = 0;
+        _bathRoomController = 0;
+        _bedRoomController = 0;
+        _areaController = 0;
+        _companyNameController = '';
+        _statusController = '';
+        _descriptionController = '';
 
         setState(() {
           _selectedImages.clear();
@@ -293,7 +338,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
 
                   Expanded(
                     child: TextFormField(
-                      controller: _companyNameController,
+                      // initialValue: widget.companyName,
                       decoration: const InputDecoration(
                         labelText: 'Real estate company',
                         prefixIcon: Icon(Icons.real_estate_agent_outlined,
@@ -314,7 +359,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                           child: DropdownButton(
-                        value: category,
+                        value: 'Villa',
                         onChanged: (String? newValue) {
                           setState(() {
                             category = newValue!;
@@ -327,7 +372,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       ),
                       Expanded(
                           child: DropdownButton(
-                              value: whatFor,
+                              value: "Rent",
                               onChanged: (String? newValue) {
                                 setState(() {
                                   whatFor = newValue!;
@@ -342,7 +387,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: TextFormField(
-                          controller: _addressController,
+                          // initialValue: widget.address,
                           decoration: const InputDecoration(
                             labelText: 'Location',
                             prefixIcon: Icon(Icons.location_on_outlined,
@@ -359,7 +404,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: TextFormField(
-                          controller: _priceController,
+                          // initialValue: widget.price.toString(),
                           decoration: const InputDecoration(
                             labelText: 'Price',
                             prefixIcon: Icon(Icons.money, color: Colors.teal),
@@ -380,7 +425,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          controller: _bedRoomController,
+                          // initialValue: widget.bedRooms.toString(),
                           decoration: const InputDecoration(
                             labelText: 'Bed rooms',
                             prefixIcon:
@@ -398,7 +443,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: TextFormField(
-                          controller: _bathRoomController,
+                          // initialValue: widget.bathRoom.toString(),
                           decoration: const InputDecoration(
                             labelText: 'Bath rooms',
                             prefixIcon:
@@ -418,8 +463,8 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                   const SizedBox(height: 16.0),
                   Expanded(
                     child: TextFormField(
+                      // initialValue: widget.description,
                       maxLines: 5,
-                      controller: _descriptionController,
                       decoration: const InputDecoration(
                         labelText: 'Description',
                         prefixIcon: Icon(Icons.description_outlined,
@@ -440,7 +485,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: DropdownButton(
-                          value: status,
+                          value: "Finished",
                           onChanged: (String? newValue) {
                             setState(() {
                               status = newValue!;
@@ -451,7 +496,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
-                          controller: _areaController,
+                          // initialValue: widget.area.toString(),
                           decoration: const InputDecoration(
                             labelText: 'Area',
                             prefixIcon: Icon(Icons.area_chart_outlined,

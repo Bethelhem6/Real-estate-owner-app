@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:upload_property/my_properties/add_property.dart';
 
 class MyProperties extends StatefulWidget {
   const MyProperties({super.key});
@@ -167,7 +168,7 @@ class TabViewWidget extends StatelessWidget {
                               children: [
                                 Container(
                                   margin: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
+                                      horizontal: 10, vertical: 0),
                                   width: 150,
                                   height: 170,
                                   decoration: BoxDecoration(
@@ -241,21 +242,151 @@ class TabViewWidget extends StatelessWidget {
                                       Row(
                                         children: [
                                           TextButton.icon(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              // Navigator.push(
+                                              //     context,
+                                              //     MaterialPageRoute(
+                                              //         builder: (context) => AddHouseScreen(
+                                              //             id: doc[index]['id'],
+                                              //             address: doc[index]
+                                              //                 ['address'],
+                                              //             price: doc[index]
+                                              //                 ['price'],
+                                              //             imageUrls: doc[index]
+                                              //                 ['imageUrls'],
+                                              //             companyName: doc[index]
+                                              //                 ['companyName'],
+                                              //             category: doc[index]
+                                              //                 ['category'],
+                                              //             status: doc[index]
+                                              //                 ['status'],
+                                              //             bedRooms: doc[index]
+                                              //                 ['bedRoom'],
+                                              //             bathRoom: doc[index]
+                                              //                 ['bathRoom'],
+                                              //             dateAdded: doc[index]
+                                              //                 ['dateAdded'],
+                                              //             likes: doc[index]
+                                              //                 ['likes'],
+                                              //             description: doc[index]
+                                              //                 ['description'],
+                                              //             ownerName: doc[index]
+                                              //                 ['ownerName'],
+                                              //             ownerEmail: doc[index]
+                                              //                 ['ownerEmail'],
+                                              //             ownerImage: doc[index]['ownerImage'],
+                                              //             area: doc[index]['area'],
+                                              //             whatFor: doc[index]['whatFor'],
+                                              //             ownerId: doc[index]['ownerId'],
+                                              //             validationStatus: "posted")));
+                                            },
                                             icon: const Icon(Icons.edit),
                                             label: const Text("Edit Post"),
                                           ),
                                           TextButton.icon(
-                                            onPressed: () {},
-                                            icon: const Icon(
-                                              Icons.block,
-                                              color: Colors.orange,
-                                            ),
-                                            label: const Text(
-                                              "Inactive",
-                                              style: TextStyle(
-                                                  color: Colors.orange),
-                                            ),
+                                            onPressed: validationStatus !=
+                                                    "inactive"
+                                                ? () {
+                                                    inActive(
+                                                        id: doc[index]['id'],
+                                                        address: doc[index]
+                                                            ['address'],
+                                                        price: doc[index]
+                                                            ['price'],
+                                                        imageUrls: doc[index]
+                                                            ['imageUrls'],
+                                                        companyName: doc[index]
+                                                            ['companyName'],
+                                                        category: doc[index]
+                                                            ['category'],
+                                                        status: doc[index]
+                                                            ['status'],
+                                                        bedRooms: doc[index]
+                                                            ['bedRoom'],
+                                                        bathRoom: doc[index]
+                                                            ['bathRoom'],
+                                                        dateAdded: doc[index]
+                                                            ['dateAdded'],
+                                                        likes: doc[index]
+                                                            ['likes'],
+                                                        description: doc[index]
+                                                            ['description'],
+                                                        ownerName: doc[index]
+                                                            ['ownerName'],
+                                                        ownerEmail: doc[index]
+                                                            ['ownerEmail'],
+                                                        ownerImage: doc[index]
+                                                            ['ownerImage'],
+                                                        area: doc[index]
+                                                            ['area'],
+                                                        whatFor: doc[index]
+                                                            ['whatFor'],
+                                                        ownerId: doc[index]
+                                                            ['ownerId'],
+                                                        validationStatus:
+                                                            "posted");
+                                                  }
+                                                : () {
+                                                    activate(
+                                                        id: doc[index]['id'],
+                                                        address: doc[index]
+                                                            ['address'],
+                                                        price: doc[index]
+                                                            ['price'],
+                                                        imageUrls: doc[index]
+                                                            ['imageUrls'],
+                                                        companyName: doc[index]
+                                                            ['companyName'],
+                                                        category: doc[index]
+                                                            ['category'],
+                                                        status: doc[index]
+                                                            ['status'],
+                                                        bedRooms: doc[index]
+                                                            ['bedRoom'],
+                                                        bathRoom: doc[index]
+                                                            ['bathRoom'],
+                                                        dateAdded: doc[index]
+                                                            ['dateAdded'],
+                                                        likes: doc[index]
+                                                            ['likes'],
+                                                        description: doc[index]
+                                                            ['description'],
+                                                        ownerName: doc[index]
+                                                            ['ownerName'],
+                                                        ownerEmail: doc[index]
+                                                            ['ownerEmail'],
+                                                        ownerImage: doc[index]
+                                                            ['ownerImage'],
+                                                        area: doc[index]
+                                                            ['area'],
+                                                        whatFor: doc[index]
+                                                            ['whatFor'],
+                                                        ownerId: doc[index]
+                                                            ['ownerId'],
+                                                        validationStatus:
+                                                            "posted");
+                                                  },
+                                            icon: validationStatus != "inactive"
+                                                ? const Icon(
+                                                    Icons.block,
+                                                    color: Colors.red,
+                                                  )
+                                                : const Icon(
+                                                    Icons.block,
+                                                    color: Colors.orange,
+                                                  ),
+                                            label: validationStatus !=
+                                                    "inactive"
+                                                ? const Text(
+                                                    "Inactive",
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  )
+                                                : const Text(
+                                                    "Activate",
+                                                    style: TextStyle(
+                                                        color: Colors.orange),
+                                                  ),
                                           ),
                                         ],
                                       ),
@@ -273,5 +404,117 @@ class TabViewWidget extends StatelessWidget {
             return const Text("something went wrong");
           }),
     );
+  }
+
+  void inActive(
+      {required id,
+      required address,
+      required price,
+      required imageUrls,
+      required companyName,
+      required category,
+      required status,
+      required bedRooms,
+      required bathRoom,
+      required dateAdded,
+      required likes,
+      required description,
+      required ownerName,
+      required ownerEmail,
+      required ownerImage,
+      required area,
+      required whatFor,
+      required ownerId,
+      required String validationStatus}) async {
+    try {
+      print(id);
+      await FirebaseFirestore.instance
+          .collection('inactive houses')
+          .doc(id)
+          .set({
+        'id': id,
+        'address': address,
+        'price': price,
+        'imageUrls': imageUrls,
+        'companyName': companyName,
+        'category': category,
+        'status': status,
+        'bedRoom': bedRooms,
+        'bathRoom': bathRoom,
+        'dateAdded': dateAdded,
+        'likes': likes,
+        'description': description,
+        'ownerName': ownerName,
+        'ownerEmail': ownerEmail,
+        'ownerImage': ownerImage,
+        "whatFor": whatFor,
+        "area": area,
+        "ownerId": ownerId,
+        "validationStatus": "inactive",
+      });
+      // print("inactive sucess");
+      await FirebaseFirestore.instance.collection("houses").doc(id).delete();
+      print("successss");
+
+      // _globalMethods.showDialogues(context, "Product inactived successfully.");
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void activate(
+      {required id,
+      required address,
+      required price,
+      required imageUrls,
+      required companyName,
+      required category,
+      required status,
+      required bedRooms,
+      required bathRoom,
+      required dateAdded,
+      required likes,
+      required description,
+      required ownerName,
+      required ownerEmail,
+      required ownerImage,
+      required area,
+      required whatFor,
+      required ownerId,
+      required String validationStatus}) async {
+    try {
+      print(id);
+      await FirebaseFirestore.instance.collection('houses').doc(id).set({
+        'id': id,
+        'address': address,
+        'price': price,
+        'imageUrls': imageUrls,
+        'companyName': companyName,
+        'category': category,
+        'status': status,
+        'bedRoom': bedRooms,
+        'bathRoom': bathRoom,
+        'dateAdded': dateAdded,
+        'likes': likes,
+        'description': description,
+        'ownerName': ownerName,
+        'ownerEmail': ownerEmail,
+        'ownerImage': ownerImage,
+        "whatFor": whatFor,
+        "area": area,
+        "ownerId": ownerId,
+        "validationStatus": "posted",
+      });
+      // print("inactive sucess");
+      await FirebaseFirestore.instance
+          .collection("inactive houses")
+          .doc(id)
+          .delete();
+      print("successss");
+
+      // _globalMethods.showDialogues(context, "Product inactived successfully.");
+    } catch (e) {
+      print(e);
+    }
   }
 }
