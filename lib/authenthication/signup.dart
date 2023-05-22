@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:upload_property/my_properties/mian_page.dart';
 import 'package:upload_property/my_properties/my_properties.dart';
+import 'package:upload_property/widgets/golobal_methods.dart';
 
 import '../../helper/helper.dart';
 import '../../services/service.dart';
@@ -34,16 +35,23 @@ class _RegisterPageState extends State<RegisterPage> {
   String url = "";
 
   AuthService authService = AuthService();
+  GlobalMethods _globalMethods = GlobalMethods();
 
   File? _image;
   XFile? imgXFile;
 
   Future _getImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    try {
 
-    setState(() {
+ setState(() {
       _image = File(image!.path);
     });
+
+    } catch (e) {
+      _globalMethods.showDialogues(context, "Image is required");
+    }
+   
   }
 
   @override

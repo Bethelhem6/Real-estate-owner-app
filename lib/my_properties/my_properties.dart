@@ -100,8 +100,9 @@ class _MyPropertiesState extends State<MyProperties> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 700,
+                    Container(
+                      // color: Colors.amber,
+                      height: MediaQuery.of(context).size.height,
                       child: TabBarView(
                         children: [
                           // TabViewWidget(
@@ -165,6 +166,7 @@ class TabViewWidget extends StatelessWidget {
                             0)
                         ? Card(
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Container(
                                   margin: const EdgeInsets.symmetric(

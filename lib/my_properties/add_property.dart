@@ -102,28 +102,28 @@ class AddHouseScreen extends StatefulWidget {
   // final int? price;
   // final List<dynamic>? imageUrls;
 
-  const AddHouseScreen(
-      {super.key,
-      // this.id,
-      // this.whatFor,
-      // this.address,
-      // this.companyName,
-      // this.category,
-      // this.status,
-      // this.bedRooms,
-      // this.bathRoom,
-      // this.ownerId,
-      // this.area,
-      // this.dateAdded,
-      // this.likes,
-      // this.description,
-      // this.ownerName,
-      // this.ownerImage,
-      // this.ownerEmail,
-      // this.validationStatus,
-      // this.price,
-      // this.imageUrls
-      });
+  const AddHouseScreen({
+    super.key,
+    // this.id,
+    // this.whatFor,
+    // this.address,
+    // this.companyName,
+    // this.category,
+    // this.status,
+    // this.bedRooms,
+    // this.bathRoom,
+    // this.ownerId,
+    // this.area,
+    // this.dateAdded,
+    // this.likes,
+    // this.description,
+    // this.ownerName,
+    // this.ownerImage,
+    // this.ownerEmail,
+    // this.validationStatus,
+    // this.price,
+    // this.imageUrls
+  });
 
   @override
   _AddHouseScreenState createState() => _AddHouseScreenState();
@@ -197,6 +197,8 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
     ];
     return menuItems;
   }
+
+  // TextEditingController controller = TextEditingController();
 
   @override
   void initState() {
@@ -296,7 +298,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
           _selectedImages.clear();
           _isLoading = false;
         });
-        Navigator.pop(context);
+        // Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to upload house')),
@@ -350,6 +352,11 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                         }
                         return null;
                       },
+                      onChanged: (value) {
+                        setState(() {
+                          _companyNameController = value;
+                        });
+                      },
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -359,7 +366,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                           child: DropdownButton(
-                        value: 'Villa',
+                        value: category,
                         onChanged: (String? newValue) {
                           setState(() {
                             category = newValue!;
@@ -372,13 +379,14 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       ),
                       Expanded(
                           child: DropdownButton(
-                              value: "Rent",
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  whatFor = newValue!;
-                                });
-                              },
-                              items: options)),
+                        value: whatFor,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            whatFor = newValue!;
+                          });
+                        },
+                        items: options,
+                      )),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -387,36 +395,44 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: TextFormField(
-                          // initialValue: widget.address,
-                          decoration: const InputDecoration(
-                            labelText: 'Location',
-                            prefixIcon: Icon(Icons.location_on_outlined,
-                                color: Colors.purple),
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter location of property';
-                            }
-                            return null;
-                          },
-                        ),
+                            // initialValue: widget.address,
+                            decoration: const InputDecoration(
+                              labelText: 'Location',
+                              prefixIcon: Icon(Icons.location_on_outlined,
+                                  color: Colors.purple),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter location of property';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _addressController = value;
+                              });
+                            }),
                       ),
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: TextFormField(
-                          // initialValue: widget.price.toString(),
-                          decoration: const InputDecoration(
-                            labelText: 'Price',
-                            prefixIcon: Icon(Icons.money, color: Colors.teal),
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter property price';
-                            }
-                            return null;
-                          },
-                        ),
+                            // initialValue: widget.price.toString(),
+                            decoration: const InputDecoration(
+                              labelText: 'Price',
+                              prefixIcon: Icon(Icons.money, color: Colors.teal),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter property price';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _priceController = int.parse(value);
+                              });
+                            }),
                       ),
                     ],
                   ),
@@ -425,58 +441,70 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          // initialValue: widget.bedRooms.toString(),
-                          decoration: const InputDecoration(
-                            labelText: 'Bed rooms',
-                            prefixIcon:
-                                Icon(Icons.bed_outlined, color: Colors.black),
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter how many bed rooms it has.';
-                            }
-                            return null;
-                          },
-                        ),
+                            // initialValue: widget.bedRooms.toString(),
+                            decoration: const InputDecoration(
+                              labelText: 'Bed rooms',
+                              prefixIcon:
+                                  Icon(Icons.bed_outlined, color: Colors.black),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter how many bed rooms it has.';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _bedRoomController = int.parse(value);
+                              });
+                            }),
                       ),
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: TextFormField(
-                          // initialValue: widget.bathRoom.toString(),
-                          decoration: const InputDecoration(
-                            labelText: 'Bath rooms',
-                            prefixIcon:
-                                Icon(Icons.shower_outlined, color: Colors.blue),
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter how many bath rooms it has.';
-                            }
-                            return null;
-                          },
-                        ),
+                            // initialValue: widget.bathRoom.toString(),
+                            decoration: const InputDecoration(
+                              labelText: 'Bath rooms',
+                              prefixIcon: Icon(Icons.shower_outlined,
+                                  color: Colors.blue),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter how many bath rooms it has.';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _bathRoomController = int.parse(value);
+                              });
+                            }),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16.0),
                   Expanded(
                     child: TextFormField(
-                      // initialValue: widget.description,
-                      maxLines: 5,
-                      decoration: const InputDecoration(
-                        labelText: 'Description',
-                        prefixIcon: Icon(Icons.description_outlined,
-                            color: Colors.blueGrey),
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter short description about the property';
-                        }
-                        return null;
-                      },
-                    ),
+                        // initialValue: widget.description,
+                        maxLines: 5,
+                        decoration: const InputDecoration(
+                          labelText: 'Description',
+                          prefixIcon: Icon(Icons.description_outlined,
+                              color: Colors.blueGrey),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter short description about the property';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _descriptionController = value;
+                          });
+                        }),
                   ),
                   const SizedBox(height: 16.0),
 
@@ -485,7 +513,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: DropdownButton(
-                          value: "Finished",
+                          value: status,
                           onChanged: (String? newValue) {
                             setState(() {
                               status = newValue!;
@@ -496,20 +524,24 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
-                          // initialValue: widget.area.toString(),
-                          decoration: const InputDecoration(
-                            labelText: 'Area',
-                            prefixIcon: Icon(Icons.area_chart_outlined,
-                                color: Colors.pink),
-                          ),
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter property size';
-                            }
-                            return null;
-                          },
-                        ),
+                            // initialValue: widget.area.toString(),
+                            decoration: const InputDecoration(
+                              labelText: 'Area',
+                              prefixIcon: Icon(Icons.area_chart_outlined,
+                                  color: Colors.pink),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter property size';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _areaController = int.parse(value);
+                              });
+                            }),
                       ),
                     ],
                   ),
