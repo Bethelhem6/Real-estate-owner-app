@@ -1,19 +1,17 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:io';
-
-
 import 'database_service.dart';
 
 class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  File? _image;
-
+  
   Future loginUser(
     String email,
     String password,
   ) async {
     try {
-      User user = (await firebaseAuth.signInWithEmailAndPassword(
+      (await firebaseAuth.signInWithEmailAndPassword(
               email: email, password: password))
           .user!;
       return true;
@@ -22,14 +20,14 @@ class AuthService {
     }
   }
 
-  Future registerUser(String fullname, String email, String password,
-      String phonenumber, String image) async {
+  Future registerUser(String name, String email, String password,
+      String phonenumber, String _imageP) async {
     try {
       User user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user!;
       await DatabaseService(uid: user.uid)
-          .updateUserData(email, fullname,phonenumber, image,);
+          .updateUserData(email, name, phonenumber, _imageP,);
       return true;
     } on FirebaseAuthException catch (e) {
       return e.message;

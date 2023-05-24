@@ -1,24 +1,36 @@
+// ignore_for_file: use_build_context_synchronously, duplicate_ignore
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:image_picker/image_picker.dart';
+import '../../utils/colors.dart';
 import '../authenthication/login.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import '../widgets/golobal_methods.dart';
 
 // ignore: camel_case_types
-class user_profile extends StatefulWidget {
-  const user_profile({super.key});
+class UserProfile extends StatefulWidget {
+  const UserProfile({super.key});
 
   @override
-  State<user_profile> createState() => _user_profileState();
+  State<UserProfile> createState() => _UserProfileState();
 }
 
 // ignore: camel_case_types
-class _user_profileState extends State<user_profile> {
+class _UserProfileState extends State<UserProfile> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _uid = "";
   String _name = "";
   String _email = "";
-  String _image = "";
+  String _phonenumber = "";
+  var _imageP="";
+  File? _image;
+  XFile? imgXFile;
+    final GlobalMethods _globalMethods = GlobalMethods();
+
 
   void _getData() async {
     User? user = _auth.currentUser;
@@ -29,7 +41,8 @@ class _user_profileState extends State<user_profile> {
     setState(() {
       _name = userDocs.get('name');
       _email = userDocs.get('email');
-      _image = userDocs.get('image');
+      _imageP = userDocs.get('image');
+      _phonenumber = userDocs.get('phonenumber');
     });
   }
 
@@ -39,14 +52,76 @@ class _user_profileState extends State<user_profile> {
     _getData();
   }
 
+  Future _getImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+   
+    try {
+       setState(() {
+      _image = File(image!.path);
+    });
+    final ref =
+        FirebaseStorage.instance.ref().child('userimages').child('$_name.jpg');
+
+    await ref.putFile(_image!);
+    _imageP = await ref.getDownloadURL();
+    await FirebaseFirestore.instance.collection("users").doc(_uid).update({
+      "image": _imageP,
+    });
+
+    // setState(() {});
+    } catch (e) {
+      // ignore: use_build_context_synchronously
+      _globalMethods.showDialogues(context, "Image is Required!");
+    }
+    
+  }
+
+  logoutMessage() async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to Logout?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  User? user = _auth.currentUser;
+                  _uid = user!.uid;
+                  await _auth.signOut();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage()));
+                },
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.teal,
-        toolbarHeight: 70,
-        title: const Text("My Profile"),
+       title: const Text(
+          "My Profile",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 25,
+          ),
+        ),
+        backgroundColor: appbarColor,
         centerTitle: true,
+        toolbarHeight: 80,
+        toolbarOpacity: 0.8,
+        elevation: 0,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               bottomRight: Radius.circular(20),
@@ -55,7 +130,7 @@ class _user_profileState extends State<user_profile> {
       ),
       body: ListView(
         children: <Widget>[
-          Container(
+          SizedBox(
             height: 250,
             // decoration: const BoxDecoration(
             //   gradient: LinearGradient(
@@ -86,10 +161,33 @@ class _user_profileState extends State<user_profile> {
                       minRadius: 80.0,
                       child: CircleAvatar(
                         radius: 75.0,
-                        backgroundImage: NetworkImage(_image),
+                        backgroundImage:
+                            _imageP == "" ? null : NetworkImage(_imageP),
                       ),
                     ),
                   ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(135, 0, 0, 0),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.camera_front,
+                        color: Colors.deepPurple,
+                      ),
+                      GestureDetector(
+                          onTap: _getImage,
+                          child: const Text(
+                            "Change Photo",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.purple),
+                          )),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 18,
                 ),
                 Text(
                   _name,
@@ -99,21 +197,29 @@ class _user_profileState extends State<user_profile> {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.teal),
-                  onPressed: () {},
-                  icon: const Icon(Icons.edit),
-                  label: const Text('Edit profile'),
-                ),
+                // ElevatedButton.icon(
+                //   style: ElevatedButton.styleFrom(
+                //       backgroundColor: Colors.deepPurple),
+                //   onPressed: () {},
+                //   icon: const Icon(Icons.edit),
+                //   label: const Text('Edit profile'),
+                // ),
               ],
             ),
           ),
+          const SizedBox(height: 15),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+            child: Text(
+              "User Information",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                  color: Colors.grey),
+            ),
+          ),
           Container(
-            margin: const EdgeInsets.only(top: 30),
+            margin: const EdgeInsets.only(top: 10),
             child: Column(
               children: <Widget>[
                 Container(
@@ -124,15 +230,12 @@ class _user_profileState extends State<user_profile> {
                       topRight: Radius.circular(20),
                     ),
                   ),
-
-//  height: 100.0,
-                  // color: Colors.grey[100],
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                   margin: const EdgeInsets.all(5),
                   child: ListTile(
                     leading: const Icon(
                       Icons.person,
-                      color: Colors.teal,
+                      color: Colors.deepPurple,
                     ),
                     title: const Text(
                       "User Name",
@@ -163,12 +266,12 @@ class _user_profileState extends State<user_profile> {
                   //  color: Colors.grey[100],
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                   margin: const EdgeInsets.all(5),
-                  child: const ListTile(
-                    leading: Icon(
+                  child: ListTile(
+                    leading: const Icon(
                       Icons.phone,
                       color: Colors.deepOrange,
                     ),
-                    title: Text(
+                    title: const Text(
                       'Phone number',
                       style: TextStyle(
                         fontSize: 18,
@@ -176,8 +279,8 @@ class _user_profileState extends State<user_profile> {
                       ),
                     ),
                     subtitle: Text(
-                      '0901480166',
-                      style: TextStyle(
+                      _phonenumber,
+                      style: const TextStyle(
                         fontSize: 15,
                       ),
                     ),
@@ -204,7 +307,7 @@ class _user_profileState extends State<user_profile> {
                     title: const Text(
                       'Email',
                       style: TextStyle(
-                        // color: Colors.teal,
+                        // color: Colors.deepPurple,
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
@@ -250,6 +353,56 @@ class _user_profileState extends State<user_profile> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 5, 0, 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "User Setting",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: ((context) => const SendNot())));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+
+                    //  color: Colors.grey[100],
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    margin: const EdgeInsets.all(5),
+
+                    child: const ListTile(
+                      leading: Icon(
+                        Icons.lock_open_outlined,
+                        color: Colors.purple,
+                      ),
+                      title: Text(
+                        'Change Password',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
@@ -260,20 +413,22 @@ class _user_profileState extends State<user_profile> {
                   ),
 
                   //  color: Colors.grey[100],
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                   margin: const EdgeInsets.all(5),
 
                   child: ListTile(
-                    onTap: () async {
-                      await FirebaseAuth.instance.signOut();
+                    onTap: logoutMessage,
+                    // await FirebaseAuth.instance.signOut();
 
-                      Navigator.pop(context);
+                    // Navigator.pop(context);
 
-                     
+                    // Navigator.pop(context);
 
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
-                    },
+                    // Navigator.pop(context);
+
+                    //   Navigator.pushReplacement(context,
+                    //       MaterialPageRoute(builder: (context) => LoginPage()));
+                    // },
                     leading: const Icon(
                       Icons.logout,
                       color: Colors.red,

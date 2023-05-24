@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -145,7 +147,10 @@ class APIs {
         createdAt: time,
         isOnline: false,
         lastActive: time,
-        pushToken: '');
+        pushToken: '',
+        phonenumber: '',
+    role: 'owner'
+    );
 
     return await firestore
         .collection('users')

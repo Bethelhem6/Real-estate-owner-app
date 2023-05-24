@@ -1,15 +1,17 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:upload_property/authenthication/forget_pasword.dart';
 import 'package:upload_property/authenthication/signup.dart';
-import 'package:upload_property/my_properties/mian_page.dart';
+import 'package:upload_property/services/auth_service.dart';
 
-import '../services/service.dart';
-import '../widgets/custom_shapes.dart';
-import '../widgets/widget_helper.dart';
-import 'forget_pasword.dart';
+import '../../helper/helper.dart';
+import '../../widgets/widgets.dart';
+import '../my_properties/mian_page.dart';
+import '../widgets/golobal_methods.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -28,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   String _uid = "";
   AuthService authService = AuthService();
+  final GlobalMethods _globalMethods = GlobalMethods();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
               height: 360,
               width: MediaQuery.of(context).size.width,
-              color: Color.fromARGB(255, 143, 206, 206),
+              color: const Color.fromARGB(255, 200, 185, 224),
             ),
           ),
           actions: <Widget>[
@@ -53,17 +56,17 @@ class _LoginPageState extends State<LoginPage> {
                   const Icon(
                     Icons.home_work_outlined,
                     size: 180,
-                    color: Colors.teal,
+                    color: Colors.deepPurple,
                   ),
                   Row(
                     children: const [
-                      Icon(Icons.home_rounded, color: Colors.teal),
+                      Icon(Icons.home_rounded, color: Colors.deepPurple),
                       Icon(Icons.home_rounded),
-                      Icon(Icons.home_rounded, color: Colors.teal),
+                      Icon(Icons.home_rounded, color: Colors.deepPurple),
                       Icon(Icons.home_rounded),
-                      Icon(Icons.home_rounded, color: Colors.teal),
+                      Icon(Icons.home_rounded, color: Colors.deepPurple),
                       Icon(Icons.home_rounded),
-                      Icon(Icons.home_rounded, color: Colors.teal),
+                      Icon(Icons.home_rounded, color: Colors.deepPurple),
                     ],
                   ),
                 ],
@@ -95,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                               labelText: "E-mail",
                               prefixIcon: const Icon(
                                 Icons.email,
-                                color: Colors.teal,
+                                color: Colors.deepPurple,
                               ),
                             ),
                             onChanged: (val) {
@@ -121,12 +124,12 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(18),
-                                  borderSide:
-                                      const BorderSide(color: Colors.teal),
+                                  borderSide: const BorderSide(
+                                      color: Colors.deepPurple),
                                 ),
                                 prefixIcon: const Icon(
                                   Icons.lock,
-                                  color: Colors.teal,
+                                  color: Colors.deepPurple,
                                 ),
                                 hintText: 'Password',
                                 fillColor: Colors.grey[200],
@@ -145,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 alignment: Alignment.center,
                                                 child: const Icon(
                                                   Icons.visibility,
-                                                  color: Colors.teal,
+                                                  color: Colors.deepPurple,
                                                 ),
                                               )
                                             : Container(
@@ -157,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 alignment: Alignment.center,
                                                 child: const Icon(
                                                   Icons.visibility_off,
-                                                  color: Colors.teal,
+                                                  color: Colors.deepPurple,
                                                 ),
                                               ),
                                         onTap: () {
@@ -217,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
                                     width: 250,
                                     height: 50,
                                     decoration: BoxDecoration(
-                                        color: Colors.teal,
+                                        color: Colors.deepPurple,
                                         borderRadius:
                                             BorderRadius.circular(15)),
                                     child: const Center(
@@ -268,12 +271,28 @@ class _LoginPageState extends State<LoginPage> {
         final newUser = await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: email.toLowerCase().trim(),
             password: password.toLowerCase().trim());
+        if (newUser != null) {
+          User? user = FirebaseAuth.instance.currentUser;
+          _uid = user!.uid;
+          final DocumentSnapshot result = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(_uid)
+              .get();
 
-        Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MainPage()),
-        );
+          String role = result.get('role');
+          if (role == 'owner') {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MainPage()),
+            );
+          } else {
+            if (mounted) {
+              _globalMethods.showDialogues(context, 'It is not owner account.');
+            }
+          }
+        }
+
         print("logged in");
       } catch (e) {
         if (mounted) {

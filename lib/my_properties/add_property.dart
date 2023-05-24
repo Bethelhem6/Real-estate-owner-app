@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, prefer_final_fields
 
 import 'dart:io';
 
@@ -135,7 +135,6 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
 
   var _companyNameController = "";
   var _areaController = 0;
-  var _statusController = "";
   var _bedRoomController = 0;
   var _bathRoomController = 0;
   var _descriptionController = "";
@@ -146,7 +145,6 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
   List<File> _selectedImages = [];
   CollectionReference housesCollection =
       FirebaseFirestore.instance.collection('houses');
-  var _url;
   XFile? imgXFile;
 
   String _uid = "";
@@ -291,7 +289,6 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
         _bedRoomController = 0;
         _areaController = 0;
         _companyNameController = '';
-        _statusController = '';
         _descriptionController = '';
 
         setState(() {

@@ -18,7 +18,7 @@ class _MainPageState extends State<MainPage> {
     const MyProperties(),
     AddHouseScreen(),
     UserList(),
-    user_profile(),
+    UserProfile(),
   ];
   Future<bool> _onWillPop() async {
     return (await showDialog(

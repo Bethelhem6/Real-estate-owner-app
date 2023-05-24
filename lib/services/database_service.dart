@@ -1,8 +1,8 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:upload_property/models/chat_user.dart';
-
-
 
 
 
@@ -15,7 +15,7 @@ class DatabaseService {
   var user = FirebaseAuth.instance.currentUser!;
 
   Future updateUserData(
-      String email, String name, String phonenumber, String image) async {
+      String email, String name, String phonenumber, String _imageP) async {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
 
     final chatUser = ChatUser(
@@ -23,11 +23,14 @@ class DatabaseService {
         name: name,
         email: email,
         about: "Hey there!",
-        image: image,
+        image: _imageP,
         createdAt: time,
         isOnline: false,
         lastActive: time,
-        pushToken: '');
+        pushToken: '',
+        phonenumber: phonenumber,
+        role: "owner",
+    );
 
     return await userCollection.doc(uid).set(chatUser.toJson());
   }

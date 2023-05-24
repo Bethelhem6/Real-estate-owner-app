@@ -1,17 +1,20 @@
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously, duplicate_ignore
+
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:upload_property/authenthication/login.dart';
 import 'package:upload_property/my_properties/mian_page.dart';
-import 'package:upload_property/my_properties/my_properties.dart';
-import 'package:upload_property/widgets/golobal_methods.dart';
 
 import '../../helper/helper.dart';
 import '../../services/service.dart';
 import '../../widgets/widgets.dart';
-import 'login.dart';
+import '../widgets/golobal_methods.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -24,6 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool obscureText = true;
   bool _isVisible = false;
 
+  final GlobalMethods _globalMethods = GlobalMethods();
   bool _isLoading = false;
   final formkey = GlobalKey<FormState>();
 
@@ -31,25 +35,36 @@ class _RegisterPageState extends State<RegisterPage> {
   String password = "";
   String name = "";
   String phonenumber = "";
-  String image = "";
+  // ignore: prefer_typing_uninitialized_variables
+  String _imageP = "";
   String url = "";
+  final String _uid = "";
 
   AuthService authService = AuthService();
-  GlobalMethods _globalMethods = GlobalMethods();
-
   File? _image;
   XFile? imgXFile;
 
   Future _getImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     try {
+      setState(() {
+        _image = File(image!.path);
+      });
 
- setState(() {
-      _image = File(image!.path);
+       final ref =
+        FirebaseStorage.instance.ref().child('userimages').child('$name.jpg');
+
+    await ref.putFile(_image!);
+    _imageP = await ref.getDownloadURL();
+    await FirebaseFirestore.instance.collection("users").doc(_uid).set({
+      "image": _imageP,
     });
-
     } catch (e) {
-      _globalMethods.showDialogues(context, "Image is required");
+      // ignore: use_build_context_synchronously
+      if(mounted){
+              _globalMethods.showDialogues(context, "Image is Required!");
+
+      }
     }
    
   }
@@ -63,7 +78,7 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           elevation: 0.0,
-          shadowColor: Color.fromARGB(255, 143, 206, 206),
+          shadowColor: const Color.fromARGB(255, 188, 176, 209),
           flexibleSpace: ClipPath(
             clipper: Customeshape(),
             child: Container(
@@ -72,8 +87,8 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color.fromARGB(255, 143, 206, 206),
-                    Color.fromARGB(255, 143, 206, 206),
+                    Color.fromARGB(255, 200, 185, 224),
+                    Color.fromARGB(255, 200, 185, 224),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -87,7 +102,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Icon(
                 Icons.home_work_outlined,
                 size: 120,
-                color: Colors.teal,
+                color: Colors.deepPurple,
               ),
             )
           ],
@@ -120,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: CircleAvatar(
                                   radius: 55,
                                   backgroundColor:
-                                      const Color.fromARGB(255, 143, 206, 206),
+                                      const Color.fromARGB(255, 170, 138, 207),
                                   backgroundImage: _image == null
                                       ? null
                                       : FileImage(_image!),
@@ -140,7 +155,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 prefixIcon: const Icon(
                                   Icons.person,
                                   size: 25,
-                                  color: Colors.teal,
+                                  color: Colors.deepPurple,
                                 ),
                               ),
                               onChanged: (val) {
@@ -173,7 +188,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 prefixIcon: const Icon(
                                   Icons.phone,
                                   size: 25,
-                                  color: Colors.teal,
+                                  color: Colors.deepPurple,
                                 ),
                               )),
                           const SizedBox(height: 20),
@@ -184,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 prefixIcon: const Icon(
                                   Icons.email,
                                   size: 25,
-                                  color: Colors.teal,
+                                  color: Colors.deepPurple,
                                 )),
                             onChanged: (val) {
                               setState(() {
@@ -209,12 +224,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(18),
-                                  borderSide:
-                                      const BorderSide(color: Colors.teal),
+                                  borderSide: const BorderSide(
+                                      color: Colors.deepPurple),
                                 ),
                                 prefixIcon: const Icon(
                                   Icons.lock,
-                                  color: Colors.teal,
+                                  color: Colors.deepPurple,
                                 ),
                                 hintText: 'Password',
                                 fillColor: Colors.grey[200],
@@ -233,7 +248,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 alignment: Alignment.center,
                                                 child: const Icon(
                                                   Icons.visibility,
-                                                  color: Colors.teal,
+                                                  color: Colors.deepPurple,
                                                 ),
                                               )
                                             : Container(
@@ -245,7 +260,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 alignment: Alignment.center,
                                                 child: const Icon(
                                                   Icons.visibility_off,
-                                                  color: Colors.teal,
+                                                  color: Colors.deepPurple,
                                                 ),
                                               ),
                                         onTap: () {
@@ -284,7 +299,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     width: 250,
                                     height: 50,
                                     decoration: BoxDecoration(
-                                        color: Colors.teal,
+                                        color: Colors.deepPurple,
                                         borderRadius:
                                             BorderRadius.circular(15)),
                                     child: const Center(
@@ -331,15 +346,15 @@ class _RegisterPageState extends State<RegisterPage> {
         _isLoading = true;
       });
       await authService
-          .registerUser(name, email, password, phonenumber, image)
+          .registerUser(name, email, password, phonenumber, _imageP)
           .then((value) async {
         if (value == true) {
           await Helperfunctions.saveUserLoggedInStatus(true);
           await Helperfunctions.saveUserEmailSF(email);
           await Helperfunctions.saveUserNameSF(name);
-          // await Helperfunctions.saveUserNameSF(phonenumber);
-          // await Helperfunctions.saveUserNameSF(image);
-          nextScreenReplace(context, MainPage());
+          await Helperfunctions.saveUserNameSF(phonenumber);
+          await Helperfunctions.saveUserNameSF(_imageP);
+          nextScreenReplace(context, const MainPage());
         } else {
           showSnackbar(context, Colors.red, value);
           setState(() {
