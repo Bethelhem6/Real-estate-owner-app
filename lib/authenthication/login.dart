@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
               height: 360,
               width: MediaQuery.of(context).size.width,
-              color: const Color.fromARGB(255, 200, 185, 224),
+              color: Color.fromARGB(255, 162, 218, 205),
             ),
           ),
           actions: <Widget>[
@@ -56,17 +56,17 @@ class _LoginPageState extends State<LoginPage> {
                   const Icon(
                     Icons.home_work_outlined,
                     size: 180,
-                    color: Colors.deepPurple,
+                    color: Colors.teal,
                   ),
                   Row(
                     children: const [
-                      Icon(Icons.home_rounded, color: Colors.deepPurple),
+                      Icon(Icons.home_rounded, color: Colors.teal),
                       Icon(Icons.home_rounded),
-                      Icon(Icons.home_rounded, color: Colors.deepPurple),
+                      Icon(Icons.home_rounded, color: Colors.teal),
                       Icon(Icons.home_rounded),
-                      Icon(Icons.home_rounded, color: Colors.deepPurple),
+                      Icon(Icons.home_rounded, color: Colors.teal),
                       Icon(Icons.home_rounded),
-                      Icon(Icons.home_rounded, color: Colors.deepPurple),
+                      Icon(Icons.home_rounded, color: Colors.teal),
                     ],
                   ),
                 ],
@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                               labelText: "E-mail",
                               prefixIcon: const Icon(
                                 Icons.email,
-                                color: Colors.deepPurple,
+                                color: Colors.teal,
                               ),
                             ),
                             onChanged: (val) {
@@ -124,12 +124,12 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(18),
-                                  borderSide: const BorderSide(
-                                      color: Colors.deepPurple),
+                                  borderSide:
+                                      const BorderSide(color: Colors.teal),
                                 ),
                                 prefixIcon: const Icon(
                                   Icons.lock,
-                                  color: Colors.deepPurple,
+                                  color: Colors.teal,
                                 ),
                                 hintText: 'Password',
                                 fillColor: Colors.grey[200],
@@ -148,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 alignment: Alignment.center,
                                                 child: const Icon(
                                                   Icons.visibility,
-                                                  color: Colors.deepPurple,
+                                                  color: Colors.teal,
                                                 ),
                                               )
                                             : Container(
@@ -160,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                                                 alignment: Alignment.center,
                                                 child: const Icon(
                                                   Icons.visibility_off,
-                                                  color: Colors.deepPurple,
+                                                  color: Colors.teal,
                                                 ),
                                               ),
                                         onTap: () {
@@ -220,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
                                     width: 250,
                                     height: 50,
                                     decoration: BoxDecoration(
-                                        color: Colors.deepPurple,
+                                        color: Colors.teal,
                                         borderRadius:
                                             BorderRadius.circular(15)),
                                     child: const Center(

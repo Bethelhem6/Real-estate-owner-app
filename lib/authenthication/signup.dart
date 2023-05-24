@@ -51,22 +51,20 @@ class _RegisterPageState extends State<RegisterPage> {
         _image = File(image!.path);
       });
 
-       final ref =
-        FirebaseStorage.instance.ref().child('userimages').child('$name.jpg');
+      final ref =
+          FirebaseStorage.instance.ref().child('userimages').child('$name.jpg');
 
-    await ref.putFile(_image!);
-    _imageP = await ref.getDownloadURL();
-    await FirebaseFirestore.instance.collection("users").doc(_uid).set({
-      "image": _imageP,
-    });
+      await ref.putFile(_image!);
+      _imageP = await ref.getDownloadURL();
+      await FirebaseFirestore.instance.collection("users").doc(_uid).set({
+        "image": _imageP,
+      });
     } catch (e) {
       // ignore: use_build_context_synchronously
-      if(mounted){
-              _globalMethods.showDialogues(context, "Image is Required!");
-
+      if (mounted) {
+        _globalMethods.showDialogues(context, "Image is Required!");
       }
     }
-   
   }
 
   @override
@@ -78,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           elevation: 0.0,
-          shadowColor: const Color.fromARGB(255, 188, 176, 209),
+          shadowColor: Color.fromARGB(255, 162, 218, 205),
           flexibleSpace: ClipPath(
             clipper: Customeshape(),
             child: Container(
@@ -87,8 +85,8 @@ class _RegisterPageState extends State<RegisterPage> {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Color.fromARGB(255, 200, 185, 224),
-                    Color.fromARGB(255, 200, 185, 224),
+                    Color.fromARGB(255, 162, 218, 205),
+                    Color.fromARGB(255, 162, 218, 205),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -102,7 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Icon(
                 Icons.home_work_outlined,
                 size: 120,
-                color: Colors.deepPurple,
+                color: Colors.teal,
               ),
             )
           ],
@@ -135,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: CircleAvatar(
                                   radius: 55,
                                   backgroundColor:
-                                      const Color.fromARGB(255, 170, 138, 207),
+                                      Color.fromARGB(255, 162, 218, 205),
                                   backgroundImage: _image == null
                                       ? null
                                       : FileImage(_image!),
@@ -155,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 prefixIcon: const Icon(
                                   Icons.person,
                                   size: 25,
-                                  color: Colors.deepPurple,
+                                  color: Colors.teal,
                                 ),
                               ),
                               onChanged: (val) {
@@ -188,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 prefixIcon: const Icon(
                                   Icons.phone,
                                   size: 25,
-                                  color: Colors.deepPurple,
+                                  color: Colors.teal,
                                 ),
                               )),
                           const SizedBox(height: 20),
@@ -199,7 +197,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 prefixIcon: const Icon(
                                   Icons.email,
                                   size: 25,
-                                  color: Colors.deepPurple,
+                                  color: Colors.teal,
                                 )),
                             onChanged: (val) {
                               setState(() {
@@ -224,12 +222,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(18),
-                                  borderSide: const BorderSide(
-                                      color: Colors.deepPurple),
+                                  borderSide:
+                                      const BorderSide(color: Colors.teal),
                                 ),
                                 prefixIcon: const Icon(
                                   Icons.lock,
-                                  color: Colors.deepPurple,
+                                  color: Colors.teal,
                                 ),
                                 hintText: 'Password',
                                 fillColor: Colors.grey[200],
@@ -248,7 +246,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 alignment: Alignment.center,
                                                 child: const Icon(
                                                   Icons.visibility,
-                                                  color: Colors.deepPurple,
+                                                  color: Colors.teal,
                                                 ),
                                               )
                                             : Container(
@@ -260,7 +258,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 alignment: Alignment.center,
                                                 child: const Icon(
                                                   Icons.visibility_off,
-                                                  color: Colors.deepPurple,
+                                                  color: Colors.teal,
                                                 ),
                                               ),
                                         onTap: () {
@@ -299,7 +297,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     width: 250,
                                     height: 50,
                                     decoration: BoxDecoration(
-                                        color: Colors.deepPurple,
+                                        color: Colors.teal,
                                         borderRadius:
                                             BorderRadius.circular(15)),
                                     child: const Center(
