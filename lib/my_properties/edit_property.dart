@@ -10,27 +10,27 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class House {
-  final String id;
-  final String whatFor;
-  final String address;
-  final String companyName;
-  final String category;
-  final String status;
-  final int bedRooms;
-  final int bathRoom;
-  final String ownerId;
+  final String? id;
+  final String? whatFor;
+  final String? address;
+  final String? companyName;
+  final String? category;
+  final String? status;
+  final int? bedRooms;
+  final int? bathRoom;
+  final String? ownerId;
 
-  final int area;
-  final String dateAdded;
-  final int likes;
-  final String description;
-  final String ownerName;
-  final String ownerImage;
-  final String ownerEmail;
-  final String validationStatus;
+  final int? area;
+  final String? dateAdded;
+  final int? likes;
+  final String? description;
+  final String? ownerName;
+  final String? ownerImage;
+  final String? ownerEmail;
+  final String? validationStatus;
 
-  final int price;
-  final List<dynamic> imageUrls;
+  final int? price;
+  final List<dynamic>? imageUrls;
 
   House({
     required this.validationStatus,
@@ -79,57 +79,56 @@ class House {
   }
 }
 
-class AddHouseScreen extends StatefulWidget {
-  // final String? id;
-  // final String? whatFor;
-  // final String? address;
-  // final String? companyName;
-  // final String? category;
-  // final String? status;
-  // final int? bedRooms;
-  // final int? bathRoom;
-  // final String? ownerId;
+class EditProperty extends StatefulWidget {
+  String? id;
+  String? whatFor;
+  String? address;
+  String? companyName;
+  String? category;
+  String? status;
+  int? bedRooms;
+  int? bathRoom;
+  String? ownerId;
 
-  // final int? area;
-  // final String? dateAdded;
-  // final int? likes;
-  // final String? description;
-  // final String? ownerName;
-  // final String? ownerImage;
-  // final String? ownerEmail;
-  // final String? validationStatus;
+  int? area;
+  String? dateAdded;
+  int? likes;
+  String? description;
+  String? ownerName;
+  String? ownerImage;
+  String? ownerEmail;
+  String? validationStatus;
 
-  // final int? price;
-  // final List<dynamic>? imageUrls;
+  int? price;
+  List<dynamic>? imageUrls;
 
-  const AddHouseScreen({
-    super.key,
-    // this.id,
-    // this.whatFor,
-    // this.address,
-    // this.companyName,
-    // this.category,
-    // this.status,
-    // this.bedRooms,
-    // this.bathRoom,
-    // this.ownerId,
-    // this.area,
-    // this.dateAdded,
-    // this.likes,
-    // this.description,
-    // this.ownerName,
-    // this.ownerImage,
-    // this.ownerEmail,
-    // this.validationStatus,
-    // this.price,
-    // this.imageUrls
-  });
+  EditProperty(
+      {super.key,
+      this.id,
+      this.whatFor,
+      this.address,
+      this.companyName,
+      this.category,
+      this.status,
+      this.bedRooms,
+      this.bathRoom,
+      this.ownerId,
+      this.area,
+      this.dateAdded,
+      this.likes,
+      this.description,
+      this.ownerName,
+      this.ownerImage,
+      this.ownerEmail,
+      this.validationStatus,
+      this.price,
+      this.imageUrls});
 
   @override
-  _AddHouseScreenState createState() => _AddHouseScreenState();
+  _EditPropertyState createState() => _EditPropertyState();
 }
 
-class _AddHouseScreenState extends State<AddHouseScreen> {
+class _EditPropertyState extends State<EditProperty> {
   var _addressController = "";
   var _priceController = 0;
 
@@ -158,11 +157,13 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
 
     final DocumentSnapshot userDocs =
         await FirebaseFirestore.instance.collection("users").doc(_uid).get();
-    setState(() {
-      _name = userDocs.get('name');
-      _email = userDocs.get('email');
-      _image = userDocs.get('image');
-    });
+    if (mounted) {
+      setState(() {
+        _name = userDocs.get('name');
+        _email = userDocs.get('email');
+        _image = userDocs.get('image');
+      });
+    }
   }
 
   String category = "Villa";
@@ -236,20 +237,21 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
       setState(() {
         _isLoading = true;
       });
-      var uuid = const Uuid();
-      String houseId = uuid.v4();
-      final String address = _addressController;
-      final int price = _priceController;
-      final String companyName = _companyNameController;
-      final int area = _areaController;
-      // final String status = _statusController;
 
-      final int bedRooms = _bedRoomController;
+      // setState(() {
+      //   widget.address = _addressController;
+      //   widget.price = _priceController;
+      //   widget.companyName = _companyNameController;
+      //   widget.area = _areaController;
+      //   // final String status = _statusController;
 
-      final int bathRoom = _bathRoomController;
-      final String description = _descriptionController;
+      //   widget.bedRooms = _bedRoomController;
 
-      const int likes = 0;
+      //   widget.bathRoom = _bathRoomController;
+      //   widget.description = _descriptionController;
+
+      //   widget.likes = 0;
+      // });
       var date = DateTime.now().toString();
       var parsedDate = DateTime.parse(date);
       final String dateAdded =
@@ -258,28 +260,28 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
       List<String> imageUrls = await _uploadImages(_selectedImages);
 
       House house = House(
-          id: houseId,
-          address: address,
-          price: price,
-          imageUrls: imageUrls,
-          companyName: companyName,
-          category: category,
-          status: status,
-          bedRooms: bedRooms,
-          bathRoom: bathRoom,
+          id: widget.id,
+          address: widget.address,
+          price: widget.price,
+          imageUrls: widget.imageUrls ?? imageUrls,
+          companyName: widget.companyName,
+          category: widget.category,
+          status: widget.status,
+          bedRooms: widget.bedRooms,
+          bathRoom: widget.bathRoom,
           dateAdded: dateAdded,
-          likes: likes,
-          description: description,
+          likes: widget.likes,
+          description: widget.description,
           ownerName: _name,
           ownerEmail: _email,
           ownerImage: _image,
-          area: area,
-          whatFor: whatFor,
+          area: widget.area,
+          whatFor: widget.whatFor,
           ownerId: _uid,
           validationStatus: "posted");
 
       try {
-        await housesCollection.doc(houseId).set(house.toMap());
+        await housesCollection.doc(widget.id).set(house.toMap());
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('House uploaded successfully')),
         );
@@ -337,7 +339,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
 
                   Expanded(
                     child: TextFormField(
-                      // initialValue: widget.companyName,
+                      initialValue: widget.companyName,
                       decoration: const InputDecoration(
                         labelText: 'Real estate company',
                         prefixIcon: Icon(Icons.real_estate_agent_outlined,
@@ -349,10 +351,12 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                         }
                         return null;
                       },
-                      onChanged: (value) {
-                        setState(() {
-                          _companyNameController = value;
-                        });
+                      onSaved: (value) {
+                        value!.isEmpty
+                            ? ""
+                            : setState(() {
+                                widget.companyName = value;
+                              });
                       },
                     ),
                   ),
@@ -363,10 +367,10 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                           child: DropdownButton(
-                        value: category,
+                        value: widget.category,
                         onChanged: (String? newValue) {
                           setState(() {
-                            category = newValue!;
+                            widget.category = newValue!;
                           });
                         },
                         items: categories,
@@ -376,7 +380,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       ),
                       Expanded(
                           child: DropdownButton(
-                        value: whatFor,
+                        value: widget.whatFor,
                         onChanged: (String? newValue) {
                           setState(() {
                             whatFor = newValue!;
@@ -392,7 +396,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: TextFormField(
-                            // initialValue: widget.address,
+                            initialValue: widget.address,
                             decoration: const InputDecoration(
                               labelText: 'Location',
                               prefixIcon: Icon(Icons.location_on_outlined,
@@ -404,16 +408,18 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                               }
                               return null;
                             },
-                            onChanged: (value) {
-                              setState(() {
-                                _addressController = value;
-                              });
+                            onSaved: (value) {
+                              value!.isEmpty
+                                  ? ""
+                                  : setState(() {
+                                      widget.address = value;
+                                    });
                             }),
                       ),
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: TextFormField(
-                            // initialValue: widget.price.toString(),
+                            initialValue: widget.price.toString(),
                             decoration: const InputDecoration(
                               labelText: 'Price',
                               prefixIcon: Icon(Icons.money, color: Colors.teal),
@@ -425,10 +431,12 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                               }
                               return null;
                             },
-                            onChanged: (value) {
-                              setState(() {
-                                _priceController = int.parse(value);
-                              });
+                            onSaved: (value) {
+                              value!.isEmpty
+                                  ? 0
+                                  : setState(() {
+                                      widget.price = int.parse(value);
+                                    });
                             }),
                       ),
                     ],
@@ -438,7 +446,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                            // initialValue: widget.bedRooms.toString(),
+                            initialValue: widget.bedRooms.toString(),
                             decoration: const InputDecoration(
                               labelText: 'Bed rooms',
                               prefixIcon:
@@ -451,16 +459,16 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                               }
                               return null;
                             },
-                            onChanged: (value) {
+                            onSaved: (value) {
                               setState(() {
-                                _bedRoomController = int.parse(value);
+                                widget.bedRooms = int.parse(value!);
                               });
                             }),
                       ),
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: TextFormField(
-                            // initialValue: widget.bathRoom.toString(),
+                            initialValue: widget.bathRoom.toString(),
                             decoration: const InputDecoration(
                               labelText: 'Bath rooms',
                               prefixIcon: Icon(Icons.shower_outlined,
@@ -473,10 +481,12 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                               }
                               return null;
                             },
-                            onChanged: (value) {
-                              setState(() {
-                                _bathRoomController = int.parse(value);
-                              });
+                            onSaved: (value) {
+                              value!.isEmpty
+                                  ? 0
+                                  : setState(() {
+                                      widget.bathRoom = int.parse(value);
+                                    });
                             }),
                       ),
                     ],
@@ -484,8 +494,8 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                   const SizedBox(height: 16.0),
                   Expanded(
                     child: TextFormField(
-                        // initialValue: widget.description,
-                        maxLines: 5,
+                        initialValue: widget.description,
+                        // maxLines: ,
                         decoration: const InputDecoration(
                           labelText: 'Description',
                           prefixIcon: Icon(Icons.description_outlined,
@@ -497,10 +507,12 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                           }
                           return null;
                         },
-                        onChanged: (value) {
-                          setState(() {
-                            _descriptionController = value;
-                          });
+                        onSaved: (value) {
+                          value!.isEmpty
+                              ? ""
+                              : setState(() {
+                                  widget.description = value;
+                                });
                         }),
                   ),
                   const SizedBox(height: 16.0),
@@ -510,7 +522,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: DropdownButton(
-                          value: status,
+                          value: widget.status,
                           onChanged: (String? newValue) {
                             setState(() {
                               status = newValue!;
@@ -521,7 +533,7 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                       ),
                       Expanded(
                         child: TextFormField(
-                            // initialValue: widget.area.toString(),
+                            initialValue: widget.area.toString(),
                             decoration: const InputDecoration(
                               labelText: 'Area',
                               prefixIcon: Icon(Icons.area_chart_outlined,
@@ -534,10 +546,12 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                               }
                               return null;
                             },
-                            onChanged: (value) {
-                              setState(() {
-                                _areaController = int.parse(value);
-                              });
+                            onSaved: (value) {
+                              value!.isEmpty
+                                  ? 0
+                                  : setState(() {
+                                      widget.area = int.parse(value);
+                                    });
                             }),
                       ),
                     ],
@@ -561,9 +575,13 @@ class _AddHouseScreenState extends State<AddHouseScreen> {
                   Expanded(
                     child: GridView.count(
                       crossAxisCount: 3,
-                      children: _selectedImages.map((image) {
-                        return Image.file(image);
-                      }).toList(),
+                      children: widget.imageUrls == null
+                          ? _selectedImages.map((image) {
+                              return Image.file(image);
+                            }).toList()
+                          : widget.imageUrls!.map((image) {
+                              return Image.network(image);
+                            }).toList(),
                     ),
                   ),
                   const SizedBox(height: 16.0),

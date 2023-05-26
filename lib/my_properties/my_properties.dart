@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:upload_property/my_properties/add_property.dart';
+import 'package:upload_property/my_properties/edit_property.dart';
 
 class MyProperties extends StatefulWidget {
   const MyProperties({super.key});
@@ -34,6 +35,7 @@ class _MyPropertiesState extends State<MyProperties> {
     super.initState();
     // _getData();
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -245,42 +247,42 @@ class TabViewWidget extends StatelessWidget {
                                         children: [
                                           TextButton.icon(
                                             onPressed: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (context) => AddHouseScreen(
-                                              //             id: doc[index]['id'],
-                                              //             address: doc[index]
-                                              //                 ['address'],
-                                              //             price: doc[index]
-                                              //                 ['price'],
-                                              //             imageUrls: doc[index]
-                                              //                 ['imageUrls'],
-                                              //             companyName: doc[index]
-                                              //                 ['companyName'],
-                                              //             category: doc[index]
-                                              //                 ['category'],
-                                              //             status: doc[index]
-                                              //                 ['status'],
-                                              //             bedRooms: doc[index]
-                                              //                 ['bedRoom'],
-                                              //             bathRoom: doc[index]
-                                              //                 ['bathRoom'],
-                                              //             dateAdded: doc[index]
-                                              //                 ['dateAdded'],
-                                              //             likes: doc[index]
-                                              //                 ['likes'],
-                                              //             description: doc[index]
-                                              //                 ['description'],
-                                              //             ownerName: doc[index]
-                                              //                 ['ownerName'],
-                                              //             ownerEmail: doc[index]
-                                              //                 ['ownerEmail'],
-                                              //             ownerImage: doc[index]['ownerImage'],
-                                              //             area: doc[index]['area'],
-                                              //             whatFor: doc[index]['whatFor'],
-                                              //             ownerId: doc[index]['ownerId'],
-                                              //             validationStatus: "posted")));
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) => EditProperty(
+                                                          id: doc[index]['id'],
+                                                          address: doc[index]
+                                                              ['address'],
+                                                          price: doc[index]
+                                                              ['price'],
+                                                          imageUrls: doc[index]
+                                                              ['imageUrls'],
+                                                          companyName: doc[index]
+                                                              ['companyName'],
+                                                          category: doc[index]
+                                                              ['category'],
+                                                          status: doc[index]
+                                                              ['status'],
+                                                          bedRooms: doc[index]
+                                                              ['bedRoom'],
+                                                          bathRoom: doc[index]
+                                                              ['bathRoom'],
+                                                          dateAdded: doc[index]
+                                                              ['dateAdded'],
+                                                          likes: doc[index]
+                                                              ['likes'],
+                                                          description: doc[index]
+                                                              ['description'],
+                                                          ownerName: doc[index]
+                                                              ['ownerName'],
+                                                          ownerEmail: doc[index]
+                                                              ['ownerEmail'],
+                                                          ownerImage: doc[index]['ownerImage'],
+                                                          area: doc[index]['area'],
+                                                          whatFor: doc[index]['whatFor'],
+                                                          ownerId: doc[index]['ownerId'],
+                                                          validationStatus: "posted")));
                                             },
                                             icon: const Icon(Icons.edit),
                                             label: const Text("Edit Post"),
