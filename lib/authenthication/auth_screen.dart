@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:upload_property/authenthication/login.dart';
 import 'package:upload_property/my_properties/mian_page.dart';
-import 'package:upload_property/my_properties/my_properties.dart';
 
 import '../splash_page.dart';
 
@@ -19,7 +18,7 @@ class AuthStateScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {
-            return   MainPage();
+            return   const MainPage();
           } else {
             return const LoginPage();
           }

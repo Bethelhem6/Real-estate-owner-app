@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, unnecessary_null_comparison
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,10 +8,8 @@ import 'package:upload_property/authenthication/forget_pasword.dart';
 import 'package:upload_property/authenthication/signup.dart';
 import 'package:upload_property/services/auth_service.dart';
 
-import '../../helper/helper.dart';
 import '../../widgets/widgets.dart';
 import '../my_properties/mian_page.dart';
-import '../widgets/golobal_methods.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -28,9 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   String email = "";
   String password = "";
   bool _isLoading = false;
-  String _uid = "";
   AuthService authService = AuthService();
-  final GlobalMethods _globalMethods = GlobalMethods();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
               height: 360,
               width: MediaQuery.of(context).size.width,
-              color: Color.fromARGB(255, 162, 218, 205),
+              color: const Color.fromARGB(255, 162, 218, 205),
             ),
           ),
           actions: <Widget>[
@@ -94,8 +90,18 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 20),
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
-                            decoration: textInputDecoration.copyWith(
+                            decoration: InputDecoration(
                               labelText: "E-mail",
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide:
+                                    const BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide:
+                                    const BorderSide(color: Colors.teal),
+                              ),
                               prefixIcon: const Icon(
                                 Icons.email,
                                 color: Colors.teal,
@@ -117,6 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                           const SizedBox(height: 15),
                           TextFormField(
                             decoration: InputDecoration(
+                                labelText: "Password",
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(18),
                                   borderSide:
@@ -131,11 +138,8 @@ class _LoginPageState extends State<LoginPage> {
                                   Icons.lock,
                                   color: Colors.teal,
                                 ),
-                                hintText: 'Password',
                                 fillColor: Colors.grey[200],
                                 filled: true,
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
                                 suffixIcon: _isVisible
                                     ? GestureDetector(
                                         child: obscureText
@@ -272,28 +276,27 @@ class _LoginPageState extends State<LoginPage> {
             email: email.toLowerCase().trim(),
             password: password.toLowerCase().trim());
         if (newUser != null) {
-          User? user = FirebaseAuth.instance.currentUser;
-          _uid = user!.uid;
-          final DocumentSnapshot result = await FirebaseFirestore.instance
-              .collection('users')
-              .doc(_uid)
+          final doc = await FirebaseFirestore.instance
+              .collection("users")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
               .get();
 
-          String role = result.get('role');
-          if (role == 'owner') {
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const MainPage()),
-            );
-          } else {
-            if (mounted) {
-              _globalMethods.showDialogues(context, 'It is not owner account.');
+          if (doc.exists) {
+            if (doc["role"] == "owner") {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MainPage()),
+              );
+            } else {
+              showSnackbar(
+                  context, Colors.red, "Account is not owner account. ");
             }
+          } else {
+            showSnackbar(context, Colors.red,
+                "Account is blocked. Contact customer services. ");
           }
         }
-
-        print("logged in");
       } catch (e) {
         if (mounted) {
           showSnackbar(context, Colors.red, e.toString());

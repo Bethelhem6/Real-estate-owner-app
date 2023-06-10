@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, prefer_final_fields
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, prefer_final_fields, deprecated_member_use
 
 import 'dart:io';
 

@@ -16,9 +16,9 @@ class _MainPageState extends State<MainPage> {
   int currentIndex = 0;
   final screens = [
     const MyProperties(),
-    AddHouseScreen(),
-    UserList(),
-    UserProfile(),
+    const AddHouseScreen(),
+    const UserList(),
+    const UserProfile(),
   ];
   Future<bool> _onWillPop() async {
     return (await showDialog(
@@ -56,7 +56,7 @@ class _MainPageState extends State<MainPage> {
           showUnselectedLabels: true,
           currentIndex: currentIndex,
           unselectedItemColor: Colors.white,
-          selectedItemColor: Color.fromARGB(255, 240, 200, 21),
+          selectedItemColor: const Color.fromARGB(255, 240, 200, 21),
           onTap: (index) => setState(() {
             currentIndex = index;
           }),

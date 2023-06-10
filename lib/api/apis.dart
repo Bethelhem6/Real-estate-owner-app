@@ -13,7 +13,6 @@ import 'package:http/http.dart';
 import '../models/chat_user.dart';
 import '../models/message.dart';
 
-
 class APIs {
   // for authentication
   static FirebaseAuth auth = FirebaseAuth.instance;
@@ -139,17 +138,18 @@ class APIs {
     final time = DateTime.now().millisecondsSinceEpoch.toString();
 
     final chatUser = ChatUser(
-        id: user.uid,
-        name: user.displayName.toString(),
-        email: user.email.toString(),
-        about: "Hey, I'm using We Chat!",
-        image: user.photoURL.toString(),
-        createdAt: time,
-        isOnline: false,
-        lastActive: time,
-        pushToken: '',
-        phonenumber: '',
-    role: 'owner'
+      id: user.uid,
+      name: user.displayName.toString(),
+      email: user.email.toString(),
+      about: "Hey, I'm using We Chat!",
+      image: user.photoURL.toString(),
+      createdAt: time,
+      isOnline: false,
+      lastActive: time,
+      pushToken: '',
+      phonenumber: '',
+      role: 'owner',
+      inactive: false,
     );
 
     return await firestore
@@ -168,14 +168,13 @@ class APIs {
   }
 
   // for getting all users from firestore database
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers(
-     userId) {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsers(userId) {
     log('\nUserIds: $userId');
 
     return firestore
         .collection('users')
         .where('id')
-           //because empty list throws an error
+        //because empty list throws an error
         .where('id', isNotEqualTo: user.uid)
         .snapshots();
   }

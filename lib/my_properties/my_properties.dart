@@ -1,7 +1,8 @@
+// ignore_for_file: must_be_immutable, no_leading_underscores_for_local_identifiers, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:upload_property/my_properties/add_property.dart';
 import 'package:upload_property/my_properties/edit_property.dart';
 
 class MyProperties extends StatefulWidget {
@@ -12,23 +13,7 @@ class MyProperties extends StatefulWidget {
 }
 
 class _MyPropertiesState extends State<MyProperties> {
-  String _uid = "";
-  String _name = "";
-  String _email = "";
-  String _image = "";
 
-  void _getData() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    _uid = user!.uid;
-
-    final DocumentSnapshot userDocs =
-        await FirebaseFirestore.instance.collection("users").doc(_uid).get();
-    setState(() {
-      _name = userDocs.get('name');
-      _email = userDocs.get('email');
-      _image = userDocs.get('image');
-    });
-  }
 
   @override
   void initState() {
@@ -102,7 +87,7 @@ class _MyPropertiesState extends State<MyProperties> {
                         ),
                       ],
                     ),
-                    Container(
+                    SizedBox(
                       // color: Colors.amber,
                       height: MediaQuery.of(context).size.height,
                       child: TabBarView(

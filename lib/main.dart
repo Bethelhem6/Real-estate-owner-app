@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:upload_property/authenthication/auth_screen.dart';
-import 'package:upload_property/my_properties/mian_page.dart';
-import 'package:upload_property/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +20,9 @@ class MyApp extends StatelessWidget {
       title: 'Companies app',
       theme: ThemeData(
         primaryColor: Colors.teal,
+        primarySwatch: Colors.teal
       ),
-      home: const MainPage(),
+      home: const AuthStateScreen(),
     );
   }
 }

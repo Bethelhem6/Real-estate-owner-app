@@ -76,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
           elevation: 0.0,
-          shadowColor: Color.fromARGB(255, 162, 218, 205),
+          shadowColor: const Color.fromARGB(255, 162, 218, 205),
           flexibleSpace: ClipPath(
             clipper: Customeshape(),
             child: Container(
@@ -133,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: CircleAvatar(
                                   radius: 55,
                                   backgroundColor:
-                                      Color.fromARGB(255, 162, 218, 205),
+                                      const Color.fromARGB(255, 162, 218, 205),
                                   backgroundImage: _image == null
                                       ? null
                                       : FileImage(_image!),
@@ -148,11 +148,20 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           const SizedBox(height: 20),
                           TextFormField(
-                              decoration: textInputDecoration.copyWith(
+                              decoration: InputDecoration(
                                 labelText: "Full Name",
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                  borderSide:
+                                      const BorderSide(color: Colors.white),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                  borderSide:
+                                      const BorderSide(color: Colors.teal),
+                                ),
                                 prefixIcon: const Icon(
-                                  Icons.person,
-                                  size: 25,
+                                  Icons.email,
                                   color: Colors.teal,
                                 ),
                               ),
@@ -170,35 +179,55 @@ class _RegisterPageState extends State<RegisterPage> {
                               }),
                           const SizedBox(height: 20),
                           TextFormField(
-                              onChanged: (val) {
-                                setState(() {
-                                  phonenumber = val;
-                                });
-                              },
-                              validator: (val) {
-                                return RegExp(r"^[0-9]").hasMatch(val!)
-                                    ? null
-                                    : "Please Enter a Valid Phone Number";
-                              },
-                              keyboardType: TextInputType.number,
-                              decoration: textInputDecoration.copyWith(
-                                labelText: "Phone Number",
-                                prefixIcon: const Icon(
-                                  Icons.phone,
-                                  size: 25,
-                                  color: Colors.teal,
-                                ),
-                              )),
+                            onChanged: (val) {
+                              setState(() {
+                                phonenumber = val;
+                              });
+                            },
+                            validator: (val) {
+                              return RegExp(r"^[0-9]").hasMatch(val!)
+                                  ? null
+                                  : "Please Enter a Valid Phone Number";
+                            },
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: "Phone Number",
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide:
+                                    const BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide:
+                                    const BorderSide(color: Colors.teal),
+                              ),
+                              prefixIcon: const Icon(
+                                Icons.email,
+                                color: Colors.teal,
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 20),
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
-                            decoration: textInputDecoration.copyWith(
-                                labelText: "E-mail",
-                                prefixIcon: const Icon(
-                                  Icons.email,
-                                  size: 25,
-                                  color: Colors.teal,
-                                )),
+                            decoration: InputDecoration(
+                              labelText: "E-mail",
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide:
+                                    const BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide:
+                                    const BorderSide(color: Colors.teal),
+                              ),
+                              prefixIcon: const Icon(
+                                Icons.email,
+                                color: Colors.teal,
+                              ),
+                            ),
                             onChanged: (val) {
                               setState(() {
                                 email = val;
@@ -215,6 +244,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           const SizedBox(height: 15),
                           TextFormField(
                             decoration: InputDecoration(
+                                labelText: "Password",
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(18),
                                   borderSide:
@@ -229,11 +259,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                   Icons.lock,
                                   color: Colors.teal,
                                 ),
-                                hintText: 'Password',
                                 fillColor: Colors.grey[200],
                                 filled: true,
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
                                 suffixIcon: _isVisible
                                     ? GestureDetector(
                                         child: obscureText

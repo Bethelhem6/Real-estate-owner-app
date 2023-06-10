@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import '../widgets/widget_helper.dart';
 import 'login.dart';
 
-
 class ResetPassword extends StatefulWidget {
   static const routeName = '/login';
 
@@ -36,7 +35,7 @@ class _Login extends State<ResetPassword> {
 
       try {
         await _auth.sendPasswordResetEmail(email: _email).then((value) =>
-            showSnackbar(context, Colors.deepPurple.shade300,
+            showSnackbar(context, Colors.teal.shade300,
                 "The password reset link has been sent to your email. Please Check Your Email."));
         Navigator.pop(context);
 
@@ -63,7 +62,7 @@ class _Login extends State<ResetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Colors.teal,
           toolbarHeight: 70,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -155,7 +154,7 @@ class _Login extends State<ResetPassword> {
         : Container(
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
             decoration: BoxDecoration(
-              color: Colors.deepPurple,
+              color: Colors.teal,
               borderRadius: BorderRadius.circular(100),
             ),
             child: MaterialButton(
