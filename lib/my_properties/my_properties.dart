@@ -334,7 +334,7 @@ class TabViewWidget extends StatelessWidget {
                                               ? const Text("")
                                               : TextButton.icon(
                                                   onPressed: validationStatus !=
-                                                          "posted"
+                                                          "inactive"
                                                       ? () {
                                                           inActive(
                                                               id: doc[index]
