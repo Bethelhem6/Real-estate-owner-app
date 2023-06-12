@@ -13,14 +13,11 @@ class MyProperties extends StatefulWidget {
 }
 
 class _MyPropertiesState extends State<MyProperties> {
-
-
   @override
   void initState() {
     super.initState();
     // _getData();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +99,7 @@ class _MyPropertiesState extends State<MyProperties> {
                           ),
                           TabViewWidget(
                             validationStatus: "closed",
-                            collection: "colsed houses",
+                            collection: "closed houses",
                           ),
                           TabViewWidget(
                             validationStatus: "inactive",
@@ -155,31 +152,87 @@ class TabViewWidget extends StatelessWidget {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 0),
-                                  width: 150,
-                                  height: 170,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white,
-                                    boxShadow: const [
-                                      BoxShadow(
-                                          color: Colors.black45,
-                                          blurRadius: 5,
-                                          offset: Offset(0, 3)),
-                                      BoxShadow(
-                                          color: Colors.white,
-                                          offset: Offset(-5, 0)),
-                                      BoxShadow(
-                                          color: Colors.white,
-                                          offset: Offset(5, 0)),
-                                    ],
-                                    image: DecorationImage(
-                                        image: NetworkImage(
-                                            doc[index]["imageUrls"][0]),
-                                        fit: BoxFit.cover),
-                                  ),
+                                Column(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 0),
+                                      width: 150,
+                                      height: 170,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                        boxShadow: const [
+                                          BoxShadow(
+                                              color: Colors.black45,
+                                              blurRadius: 5,
+                                              offset: Offset(0, 3)),
+                                          BoxShadow(
+                                              color: Colors.white,
+                                              offset: Offset(-5, 0)),
+                                          BoxShadow(
+                                              color: Colors.white,
+                                              offset: Offset(5, 0)),
+                                        ],
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                doc[index]["imageUrls"][0]),
+                                            fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                    validationStatus != "posted"
+                                        ? Text("")
+                                        : TextButton.icon(
+                                            onPressed: () {
+                                              closed(
+                                                  id: doc[index]['id'],
+                                                  address: doc[index]
+                                                      ['address'],
+                                                  price: doc[index]['price'],
+                                                  imageUrls: doc[index]
+                                                      ['imageUrls'],
+                                                  companyName: doc[index]
+                                                      ['companyName'],
+                                                  category: doc[index]
+                                                      ['category'],
+                                                  status: doc[index]['status'],
+                                                  bedRooms: doc[index]
+                                                      ['bedRoom'],
+                                                  bathRoom: doc[index]
+                                                      ['bathRoom'],
+                                                  dateAdded: doc[index]
+                                                      ['dateAdded'],
+                                                  likes: doc[index]['likes'],
+                                                  description: doc[index]
+                                                      ['description'],
+                                                  ownerName: doc[index]
+                                                      ['ownerName'],
+                                                  ownerEmail: doc[index]
+                                                      ['ownerEmail'],
+                                                  ownerImage: doc[index]
+                                                      ['ownerImage'],
+                                                  area: doc[index]['area'],
+                                                  whatFor: doc[index]
+                                                      ['whatFor'],
+                                                  ownerId: doc[index]
+                                                      ['ownerId'],
+                                                  validationStatus: "posted");
+                                            },
+                                            icon: const Icon(
+                                              Icons.done_outline,
+                                              color: Colors.green,
+                                              size: 30,
+                                            ),
+                                            label: const Text(
+                                              "Closed",
+                                              style: TextStyle(
+                                                color: Colors.green,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          ),
+                                  ],
                                 ),
                                 SizedBox(
                                   child: Column(
@@ -230,153 +283,159 @@ class TabViewWidget extends StatelessWidget {
                                       ),
                                       Row(
                                         children: [
-                                          TextButton.icon(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) => EditProperty(
-                                                          id: doc[index]['id'],
-                                                          address: doc[index]
-                                                              ['address'],
-                                                          price: doc[index]
-                                                              ['price'],
-                                                          imageUrls: doc[index]
-                                                              ['imageUrls'],
-                                                          companyName: doc[index]
-                                                              ['companyName'],
-                                                          category: doc[index]
-                                                              ['category'],
-                                                          status: doc[index]
-                                                              ['status'],
-                                                          bedRooms: doc[index]
-                                                              ['bedRoom'],
-                                                          bathRoom: doc[index]
-                                                              ['bathRoom'],
-                                                          dateAdded: doc[index]
-                                                              ['dateAdded'],
-                                                          likes: doc[index]
-                                                              ['likes'],
-                                                          description: doc[index]
-                                                              ['description'],
-                                                          ownerName: doc[index]
-                                                              ['ownerName'],
-                                                          ownerEmail: doc[index]
-                                                              ['ownerEmail'],
-                                                          ownerImage: doc[index]['ownerImage'],
-                                                          area: doc[index]['area'],
-                                                          whatFor: doc[index]['whatFor'],
-                                                          ownerId: doc[index]['ownerId'],
-                                                          validationStatus: "posted")));
-                                            },
-                                            icon: const Icon(Icons.edit),
-                                            label: const Text("Edit Post"),
-                                          ),
-                                          TextButton.icon(
-                                            onPressed: validationStatus !=
-                                                    "inactive"
-                                                ? () {
-                                                    inActive(
-                                                        id: doc[index]['id'],
-                                                        address: doc[index]
-                                                            ['address'],
-                                                        price: doc[index]
-                                                            ['price'],
-                                                        imageUrls: doc[index]
-                                                            ['imageUrls'],
-                                                        companyName: doc[index]
-                                                            ['companyName'],
-                                                        category: doc[index]
-                                                            ['category'],
-                                                        status: doc[index]
-                                                            ['status'],
-                                                        bedRooms: doc[index]
-                                                            ['bedRoom'],
-                                                        bathRoom: doc[index]
-                                                            ['bathRoom'],
-                                                        dateAdded: doc[index]
-                                                            ['dateAdded'],
-                                                        likes: doc[index]
-                                                            ['likes'],
-                                                        description: doc[index]
-                                                            ['description'],
-                                                        ownerName: doc[index]
-                                                            ['ownerName'],
-                                                        ownerEmail: doc[index]
-                                                            ['ownerEmail'],
-                                                        ownerImage: doc[index]
-                                                            ['ownerImage'],
-                                                        area: doc[index]
-                                                            ['area'],
-                                                        whatFor: doc[index]
-                                                            ['whatFor'],
-                                                        ownerId: doc[index]
-                                                            ['ownerId'],
-                                                        validationStatus:
-                                                            "posted");
-                                                  }
-                                                : () {
-                                                    activate(
-                                                        id: doc[index]['id'],
-                                                        address: doc[index]
-                                                            ['address'],
-                                                        price: doc[index]
-                                                            ['price'],
-                                                        imageUrls: doc[index]
-                                                            ['imageUrls'],
-                                                        companyName: doc[index]
-                                                            ['companyName'],
-                                                        category: doc[index]
-                                                            ['category'],
-                                                        status: doc[index]
-                                                            ['status'],
-                                                        bedRooms: doc[index]
-                                                            ['bedRoom'],
-                                                        bathRoom: doc[index]
-                                                            ['bathRoom'],
-                                                        dateAdded: doc[index]
-                                                            ['dateAdded'],
-                                                        likes: doc[index]
-                                                            ['likes'],
-                                                        description: doc[index]
-                                                            ['description'],
-                                                        ownerName: doc[index]
-                                                            ['ownerName'],
-                                                        ownerEmail: doc[index]
-                                                            ['ownerEmail'],
-                                                        ownerImage: doc[index]
-                                                            ['ownerImage'],
-                                                        area: doc[index]
-                                                            ['area'],
-                                                        whatFor: doc[index]
-                                                            ['whatFor'],
-                                                        ownerId: doc[index]
-                                                            ['ownerId'],
-                                                        validationStatus:
-                                                            "posted");
+                                          validationStatus != "posted"
+                                              ? Text("")
+                                              : TextButton.icon(
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) => EditProperty(
+                                                                id: doc[index]
+                                                                    ['id'],
+                                                                address: doc[index]
+                                                                    ['address'],
+                                                                price: doc[index]
+                                                                    ['price'],
+                                                                imageUrls: doc[index][
+                                                                    'imageUrls'],
+                                                                companyName: doc[index][
+                                                                    'companyName'],
+                                                                category: doc[index][
+                                                                    'category'],
+                                                                status: doc[index]
+                                                                    ['status'],
+                                                                bedRooms: doc[index]
+                                                                    ['bedRoom'],
+                                                                bathRoom: doc[index]
+                                                                    ['bathRoom'],
+                                                                dateAdded: doc[index]['dateAdded'],
+                                                                likes: doc[index]['likes'],
+                                                                description: doc[index]['description'],
+                                                                ownerName: doc[index]['ownerName'],
+                                                                ownerEmail: doc[index]['ownerEmail'],
+                                                                ownerImage: doc[index]['ownerImage'],
+                                                                area: doc[index]['area'],
+                                                                whatFor: doc[index]['whatFor'],
+                                                                ownerId: doc[index]['ownerId'],
+                                                                validationStatus: "posted")));
                                                   },
-                                            icon: validationStatus != "inactive"
-                                                ? const Icon(
-                                                    Icons.block,
-                                                    color: Colors.red,
-                                                  )
-                                                : const Icon(
-                                                    Icons.block,
-                                                    color: Colors.orange,
+                                                  icon: const Icon(
+                                                    Icons.edit,
+                                                    color: Colors.blue,
                                                   ),
-                                            label: validationStatus !=
-                                                    "inactive"
-                                                ? const Text(
-                                                    "Inactive",
+                                                  label: const Text(
+                                                    "Edit Post",
                                                     style: TextStyle(
-                                                        color: Colors.red),
-                                                  )
-                                                : const Text(
-                                                    "Activate",
-                                                    style: TextStyle(
-                                                        color: Colors.orange),
+                                                        color: Colors.blue),
                                                   ),
-                                          ),
+                                                ),
+                                          validationStatus == "closed"
+                                              ? Text("")
+                                              : TextButton.icon(
+                                                  onPressed: validationStatus !=
+                                                          "posted"
+                                                      ? () {
+                                                          inActive(
+                                                              id: doc[index]
+                                                                  ['id'],
+                                                              address: doc[index]
+                                                                  ['address'],
+                                                              price: doc[index]
+                                                                  ['price'],
+                                                              imageUrls: doc[index]
+                                                                  ['imageUrls'],
+                                                              companyName:
+                                                                  doc[index][
+                                                                      'companyName'],
+                                                              category: doc[index]
+                                                                  ['category'],
+                                                              status: doc[index]
+                                                                  ['status'],
+                                                              bedRooms: doc[index]
+                                                                  ['bedRoom'],
+                                                              bathRoom: doc[index]
+                                                                  ['bathRoom'],
+                                                              dateAdded: doc[index]
+                                                                  ['dateAdded'],
+                                                              likes: doc[index]
+                                                                  ['likes'],
+                                                              description:
+                                                                  doc[index][
+                                                                      'description'],
+                                                              ownerName: doc[index]
+                                                                  ['ownerName'],
+                                                              ownerEmail: doc[index]
+                                                                  ['ownerEmail'],
+                                                              ownerImage: doc[index]['ownerImage'],
+                                                              area: doc[index]['area'],
+                                                              whatFor: doc[index]['whatFor'],
+                                                              ownerId: doc[index]['ownerId'],
+                                                              validationStatus: "posted");
+                                                        }
+                                                      : () {
+                                                          activate(
+                                                              id: doc[index]
+                                                                  ['id'],
+                                                              address: doc[index]
+                                                                  ['address'],
+                                                              price: doc[index]
+                                                                  ['price'],
+                                                              imageUrls: doc[index]
+                                                                  ['imageUrls'],
+                                                              companyName:
+                                                                  doc[index][
+                                                                      'companyName'],
+                                                              category: doc[index]
+                                                                  ['category'],
+                                                              status: doc[index]
+                                                                  ['status'],
+                                                              bedRooms: doc[index]
+                                                                  ['bedRoom'],
+                                                              bathRoom: doc[index]
+                                                                  ['bathRoom'],
+                                                              dateAdded: doc[index]
+                                                                  ['dateAdded'],
+                                                              likes: doc[index]
+                                                                  ['likes'],
+                                                              description:
+                                                                  doc[index][
+                                                                      'description'],
+                                                              ownerName: doc[index]
+                                                                  ['ownerName'],
+                                                              ownerEmail: doc[index]
+                                                                  ['ownerEmail'],
+                                                              ownerImage: doc[index]['ownerImage'],
+                                                              area: doc[index]['area'],
+                                                              whatFor: doc[index]['whatFor'],
+                                                              ownerId: doc[index]['ownerId'],
+                                                              validationStatus: "posted");
+                                                        },
+                                                  icon: validationStatus !=
+                                                          "inactive"
+                                                      ? const Icon(
+                                                          Icons.block,
+                                                          color: Colors.red,
+                                                        )
+                                                      : const Icon(
+                                                          Icons.block,
+                                                          color: Colors.orange,
+                                                        ),
+                                                  label: validationStatus !=
+                                                          "inactive"
+                                                      ? const Text(
+                                                          "Inactive",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.red),
+                                                        )
+                                                      : const Text(
+                                                          "Activate",
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .orange),
+                                                        ),
+                                                ),
                                         ],
                                       ),
                                     ],
@@ -499,6 +558,59 @@ class TabViewWidget extends StatelessWidget {
           .collection("inactive houses")
           .doc(id)
           .delete();
+      print("successss");
+
+      // _globalMethods.showDialogues(context, "Product inactived successfully.");
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void closed(
+      {required id,
+      required address,
+      required price,
+      required imageUrls,
+      required companyName,
+      required category,
+      required status,
+      required bedRooms,
+      required bathRoom,
+      required dateAdded,
+      required likes,
+      required description,
+      required ownerName,
+      required ownerEmail,
+      required ownerImage,
+      required area,
+      required whatFor,
+      required ownerId,
+      required String validationStatus}) async {
+    try {
+      print(id);
+      await FirebaseFirestore.instance.collection('closed houses').doc(id).set({
+        'id': id,
+        'address': address,
+        'price': price,
+        'imageUrls': imageUrls,
+        'companyName': companyName,
+        'category': category,
+        'status': status,
+        'bedRoom': bedRooms,
+        'bathRoom': bathRoom,
+        'dateAdded': dateAdded,
+        'likes': likes,
+        'description': description,
+        'ownerName': ownerName,
+        'ownerEmail': ownerEmail,
+        'ownerImage': ownerImage,
+        "whatFor": whatFor,
+        "area": area,
+        "ownerId": ownerId,
+        "validationStatus": "closed",
+      });
+      // print("inactive sucess");
+      await FirebaseFirestore.instance.collection("houses").doc(id).delete();
       print("successss");
 
       // _globalMethods.showDialogues(context, "Product inactived successfully.");
