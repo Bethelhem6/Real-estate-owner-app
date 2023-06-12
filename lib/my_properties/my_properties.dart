@@ -181,7 +181,7 @@ class TabViewWidget extends StatelessWidget {
                                       ),
                                     ),
                                     validationStatus != "posted"
-                                        ? Text("")
+                                        ? const Text("")
                                         : TextButton.icon(
                                             onPressed: () {
                                               closed(
@@ -284,7 +284,7 @@ class TabViewWidget extends StatelessWidget {
                                       Row(
                                         children: [
                                           validationStatus != "posted"
-                                              ? Text("")
+                                              ? const Text("")
                                               : TextButton.icon(
                                                   onPressed: () {
                                                     Navigator.push(
@@ -331,7 +331,7 @@ class TabViewWidget extends StatelessWidget {
                                                   ),
                                                 ),
                                           validationStatus == "closed"
-                                              ? Text("")
+                                              ? const Text("")
                                               : TextButton.icon(
                                                   onPressed: validationStatus !=
                                                           "posted"
